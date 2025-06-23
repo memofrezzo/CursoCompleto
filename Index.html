@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Curso eSports - Módulos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fondo animado con partículas */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Header con logo de institución */
+        .header {
+            position: relative;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .logo-container {
+            width: 146px;
+            height: 82px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(0, 255, 136, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-container:hover {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .logo-placeholder {
+            color: rgba(0, 255, 136, 0.7);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .course-title {
+            color: #00ff88;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 255, 136, 0.8); }
+        }
+
+        /* Container principal */
+        .main-container {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 160px);
+            align-content: center;
+        }
+
+        /* Tarjetas de módulos */
+        .module-card {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.8));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .module-card:hover::before {
+            left: 100%;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00ff88;
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .module-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: linear-gradient(145deg, rgba(60, 60, 60, 0.8), rgba(40, 40, 40, 0.8));
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .module-card.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-title {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .module-card:hover .module-title {
+            color: #00ff88;
+        }
+
+        .module-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .module-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.disabled {
+            background: #666;
+            box-shadow: none;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 136, 0.8); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 136, 1); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 136, 0.8); }
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '📥';
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .download-btn:hover::before {
+            transform: scale(1.2);
+        }
+
+        .download-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Efectos de carga */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 255, 136, 0.3);
+            border-top: 3px solid #00ff88;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .course-title {
+                font-size: 2rem;
+            }
+
+            .main-container {
+                padding: 20px;
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .module-card {
+                height: auto;
+                min-height: 100px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .module-actions {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-container {
+                width: 120px;
+                height: 68px;
+            }
+
+            .course-title {
+                font-size: 1.5rem;
+            }
+
+            .module-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Tooltip para módulos deshabilitados */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::after {
+            content: 'Próximamente disponible';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo animado -->
+    <div class="background-animation" id="particles"></div>
+  
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-spinner"></div>
+    </div>
+  
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-container">
+        <div class="logo-placeholder">
+          LOGO<br>INSTITUCIÓN<br>
+          <small>146x82px</small>
+        </div>
+      </div>
+      <h1 class="course-title">Estrategia y Entrenamiento en eSports (Coaching y Psicología Deportiva)</h1>
+    </header>
+  
+    <!-- Container principal -->
+    <main class="main-container">
+      <!-- Módulo 1: activo -->
+      <div class="module-card" data-module="1" data-active="true">
+        <div class="module-info">
+          <h2 class="module-title">Módulo 1</h2>
+          <p class="module-description">Fundamentos de eSports</p>
+        </div>
+        <div class="module-actions">
+          <div class="status-indicator"></div>
+          <button class="download-btn"
+                  data-active="true"
+                  data-folder="Modulo1"
+                  data-file="M1 - Estrategia y Entrenamiento en eSports - Alain Gerfauo.pdf"
+                  title="Descargar PDF"></button>
+        </div>
+      </div>
+  
+      <!-- Módulo 2 -->
+        <div class="module-card" data-module="2" data-active="true">
+            <div class="module-info">
+                <h2 class="module-title">Módulo 2</h2>
+                <p class="module-description">Estrategias Competitivas</p>
+            </div>
+            <div class="module-actions">
+                <div class="status-indicator"></div>
+                <button class="download-btn"
+                        data-active="true"
+                        data-folder="Modulo2"
+                        data-file="M2 - Planificación de Entrenamientos y Prácticas - Alain Gerfauo.pdf"
+                        title="Descargar PDF"></button>
+            </div>
+        </div>
+  
+      <!-- Módulo 3: activo -->
+      <div class="module-card" data-module="3" data-active="true">
+        <div class="module-info">
+          <h2 class="module-title">Módulo 3</h2>
+          <p class="module-description">Análisis de Juego</p>
+        </div>
+        <div class="module-actions">
+          <div class="status-indicator"></div>
+          <button class="download-btn"
+                  data-active="true"
+                  data-folder="Modulo3"
+                  data-file="M3 - Construcción de un equipo competitivo - Alain Gerfauo.pdf"
+                  title="Descargar PDF"></button>
+        </div>
+      </div>
+  
+      <!-- Módulo 4: inactivo -->
+      <div class="module-card disabled tooltip" data-module="4" data-active="false">
+        <div class="module-info">
+          <h2 class="module-title">Módulo 4</h2>
+          <p class="module-description">Comunicación en Equipo</p>
+        </div>
+        <div class="module-actions">
+          <div class="status-indicator disabled"></div>
+          <button class="download-btn"
+                  data-active="false"
+                  data-folder="Modulo4"
+                  data-file="Módulo 4.pdf"
+                  style="opacity: 0.5; cursor: not-allowed;"
+                  title="No disponible"></button>
+        </div>
+      </div>
+  
+      <!-- Módulo 5: inactivo -->
+      <div class="module-card disabled tooltip" data-module="5" data-active="false">
+        <div class="module-info">
+          <h2 class="module-title">Módulo 5</h2>
+          <p class="module-description">Psicología Competitiva</p>
+        </div>
+        <div class="module-actions">
+          <div class="status-indicator disabled"></div>
+          <button class="download-btn"
+                  data-active="false"
+                  title="No disponible"></button>
+        </div>
+      </div>
+  
+      <!-- Módulo 6: inactivo -->
+      <div class="module-card disabled tooltip" data-module="6" data-active="false">
+        <div class="module-info">
+          <h2 class="module-title">Módulo 6</h2>
+          <p class="module-description">Tecnología y Hardware</p>
+        </div>
+        <div class="module-actions">
+          <div class="status-indicator disabled"></div>
+          <button class="download-btn"
+                  data-active="false"
+                  title="No disponible"></button>
+        </div>
+      </div>
+  
+      <!-- Módulo 7: inactivo -->
+      <div class="module-card disabled tooltip" data-module="7" data-active="false">
+        <div class="module-info">
+          <h2 class="module-title">Módulo 7</h2>
+          <p class="module-description">Marketing en eSports</p>
+        </div>
+        <div class="module-actions">
+          <div class="status-indicator disabled"></div>
+          <button class="download-btn"
+                  data-active="false"
+                  title="No disponible"></button>
+        </div>
+      </div>
+  
+      <!-- Módulo 8: inactivo -->
+      <div class="module-card disabled tooltip" data-module="8" data-active="false">
+        <div class="module-info">
+          <h2 class="module-title">Módulo 8</h2>
+          <p class="module-description">Futuro de los eSports</p>
+        </div>
+        <div class="module-actions">
+          <div class="status-indicator disabled"></div>
+          <button class="download-btn"
+                  data-active="false"
+                  title="No disponible"></button>
+        </div>
+      </div>
+    </main>
+  
+    <script>
+        // Crear partículas animadas de fondo
+        function createParticles() {
+          const container = document.getElementById('particles');
+          const particleCount = 50;
+          for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            container.appendChild(particle);
+          }
+        }
+      
+        // Mostrar overlay de carga
+        function showLoading() {
+          document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+      
+        // Ocultar overlay de carga
+        function hideLoading() {
+          document.getElementById('loadingOverlay').style.display = 'none';
+        }
+      
+        // Sistema de notificaciones
+        function showNotification(message, type = 'success') {
+          const notification = document.createElement('div');
+          notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? 'rgba(0, 255, 136, 0.9)' : 'rgba(255, 193, 7, 0.9)'};
+            color: ${type === 'success' ? '#000' : '#fff'};
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 2000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+          `;
+          notification.textContent = message;
+          document.body.appendChild(notification);
+      
+          // Animar entrada
+          setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+          }, 100);
+      
+          // Remover después de 3 segundos
+          setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+              document.body.removeChild(notification);
+            }, 300);
+          }, 3000);
+        }
+      
+        // Manejo de clic en tarjeta de módulo
+        document.querySelectorAll('.module-card').forEach(card => {
+          card.addEventListener('click', () => {
+            if (card.dataset.active !== 'true') {
+              showNotification('Este módulo estará disponible próximamente', 'info');
+              return;
+            }
+            const folder = 'Modulo' + card.dataset.module;
+            const htmlFile = `Index${card.dataset.module}.html`;
+            showLoading();
+            setTimeout(() => {
+              window.location.href = `${folder}/${htmlFile}`;
+            }, 500);
+          });
+        });
+      
+        // Manejo de clic en botón de descarga
+        document.querySelectorAll('.download-btn').forEach(btn => {
+          btn.addEventListener('click', e => {
+            e.stopPropagation();
+            if (btn.dataset.active !== 'true') {
+              showNotification('El PDF no está disponible aún', 'info');
+              return;
+            }
+            const folder = btn.dataset.folder;
+            const file = btn.dataset.file;
+            showLoading();
+            setTimeout(() => {
+              hideLoading();
+              const link = document.createElement('a');
+              link.href = `${folder}/${file}`;
+              link.download = file;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              showNotification(`Descargando ${file}...`);
+            }, 800);
+          });
+        });
+      
+        // Opcional: efectos de sonido al hover
+        function playHoverSound() {
+          // Puedes agregar efectos de sonido aquí si deseas
+        }
+      
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', () => {
+          createParticles();
+          // Añadir sonido hover solo a módulos activos
+          document.querySelectorAll('.module-card[data-active="true"]').forEach(card => {
+            card.addEventListener('mouseenter', playHoverSound);
+          });
+          // Prevenir scroll horizontal innecesario
+          document.body.style.overflowX = 'hidden';
+        });
+      
+        // Reajustar partículas al redimensionar
+        window.addEventListener('resize', () => {
+          document.querySelectorAll('.particle').forEach(particle => {
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+          });
+        });
+      </script>
+      
+  </body>  
+</html>

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construcción de un Equipo Competitivo - eSports</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            overflow-y: auto;        /* ← permitir scroll vertical */
+            position: relative;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 150, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;       /* ← al menos toda la pantalla, pero puede crecer */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1200px;
+            /* height: 80vh; */      /* ← eliminado para que no quede fijo */
+            max-height: 80vh;        /* ← como máximo el 80% de la ventana */
+            overflow-y: auto;        /* ← permite scroll interno si hace falta */
+            background: rgba(0, 20, 40, 0.9);
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #00ffff, #ff0096, #00ffff) 1;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            position: relative;
+            box-shadow:
+                0 0 40px rgba(0, 255, 255, 0.3),
+                inset 0 0 40px rgba(0, 255, 255, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .logo-space {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 146px;
+            height: 82px;
+            border: 2px dashed rgba(0, 255, 255, 0.5);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: rgba(0, 255, 255, 0.7);
+            text-align: center;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff0096);
+            background-clip: text;           /* ← propiedad estándar */
+            -webkit-background-clip: text;   /* ← tu prefijo */
+
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        
+        h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+        
+        h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ff0096;
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px rgba(255, 0, 150, 0.6);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .author-info {
+            text-align: center;
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .author-info p {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin: 10px 0;
+            opacity: 0.8;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .objective-card {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .objective-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.6);
+        }
+        
+        .objective-card h4 {
+            color: #ff0096;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .objective-card p {
+            color: #ffffff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        ul {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        li {
+            color: #ffffff;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+            opacity: 0.9;
+        }
+        
+        li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #00ffff;
+            font-size: 1rem;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(45deg, #00ffff, #ff0096);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 25px rgba(0, 255, 255, 0.5);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(0, 20, 40, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            border-radius: 25px;
+            padding: 10px 20px;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            z-index: 100;
+        }
+        
+        .intro-text {
+            color: #ffffff;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            text-align: justify;
+            opacity: 0.9;
+            margin: 20px 0;
+        }
+        
+        .highlight {
+            color: #00ffff;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                width: 95%;
+                height: 90vh;
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .objectives-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .logo-space {
+                width: 120px;
+                height: 68px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">20</span>
+    </div>
+    
+    <div class="container">
+        <!-- Diapositiva 1: Portada -->
+        <div class="slide active">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h1>CONSTRUCCIÓN DE UN EQUIPO COMPETITIVO</h1>
+                <p class="subtitle">Estrategias Profesionales para eSports</p>
+            </div>
+            <div class="author-info">
+                <p><strong>Autor:</strong> Alain Gerfauo</p>
+                <p><strong>Módulo 3</strong> - Febrero 2025</p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 2: Introducción -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Introducción</h2>
+                <p class="intro-text">
+                    En el universo de los <span class="highlight">eSports</span>, el talento individual es solo la base sobre la que se edifica el verdadero éxito: la construcción de un equipo competitivo requiere una <span class="highlight">estrategia consciente</span> que abarque desde la selección de jugadores hasta la creación de un entorno de confianza y alto rendimiento.
+                </p>
+                <p class="intro-text">
+                    En este módulo profundizaremos en <span class="highlight">tres ejes fundamentales</span> para configurar un roster capaz de afrontar con garantías los desafíos de cualquier liga o torneo.
+                </p>
+            </div>
+        </div>
+
+        <!-- Diapositiva 3: Ejes Fundamentales -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Tres Ejes Fundamentales</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>1. Reclutamiento y Formación</h4>
+                        <p>Definir metas concretas, identificar el perfil ideal para cada posición y organizar un proceso de búsqueda que garantice complementariedad entre habilidades.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>2. Roles y Sinergias</h4>
+                        <p>Mapeo de roles según género de juego, combinación de estilos agresivos y defensivos, protocolos de comunicación y ejercicios de coordinación grupal.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>3. Evaluación y Mejora</h4>
+                        <p>Establecimiento de métricas clave, herramientas de análisis, planes personalizados y abordaje del componente físico y mental del rendimiento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 4: Objetivos del Proyecto Competitivo -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Objetivos del Proyecto Competitivo</h2>
+                <h3>Definición de Metas</h3>
+                <ul>
+                    <li><strong>Torneos de baja escala:</strong> Ligas de barrio, torneos universitarios. Objetivo: ganar experiencia y visibilidad</li>
+                    <li><strong>Torneos regionales:</strong> Competencias provinciales o zonales. Requieren mayor coordinación y ofrecen recompensas económicas</li>
+                    <li><strong>Torneos internacionales:</strong> Eventos con equipos de distintos países. Necesitan roster de élite y soporte logístico sofisticado</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 5: Horizonte de Desarrollo -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Horizonte de Desarrollo</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Pretemporada (1-2 meses)</h4>
+                        <p>Formación del roster, establecimiento de roles y primeros entrenamientos. Definición de rutinas de práctica y scrims informales.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Temporada Regular (3-6 meses)</h4>
+                        <p>Fases de competencia programadas con calendario de scrims y torneos oficiales. Monitoreo de resultados y ajustes técnicos/mentales.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Postemporada (1-2 meses)</h4>
+                        <p>Evaluación del desempeño global, ajustes profundos y planificación del roster para la siguiente temporada o ciclo mayor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 6: Perfil Ideal del Jugador - Parte 1 -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Perfil Ideal del Jugador</h2>
+                <h3>Habilidades Técnicas</h3>
+                <ul>
+                    <li><strong>Puntería y precisión:</strong> Capacidad para apuntar con exactitud, esencial en FPS y enfrentamientos de corta distancia</li>
+                    <li><strong>Last-hit y macrogame:</strong> En MOBAs, habilidad de acertar el golpe final a minions y gestión de la economía global del equipo</li>
+                    <li><strong>Combos y micromecánicas:</strong> Ejecución de secuencias de habilidades en orden óptimo, manejo de atajos y tiempos</li>
+                    <li><strong>Construcción y movimiento:</strong> En títulos como Fortnite o Rocket League, construcción de estructuras defensivas o control preciso del vehículo</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 7: Perfil Ideal del Jugador - Parte 2 -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Tácticas y Aptitudes Personales</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Competencias Tácticas</h4>
+                        <p><strong>Visión de juego:</strong> Entender la situación global y anticiparse a los movimientos del adversario</p>
+                        <p><strong>Toma de decisiones:</strong> Elegir rápidamente entre opciones bajo presión</p>
+                        <p><strong>Adaptabilidad:</strong> Ajustar estrategia según desarrollo del encuentro</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Aptitudes Personales</h4>
+                        <p><strong>Resiliencia:</strong> Recuperarse mentalmente de derrotas o errores críticos</p>
+                        <p><strong>Autocrítica:</strong> Analizar el propio rendimiento con honestidad</p>
+                        <p><strong>Liderazgo:</strong> Capacidad de motivar y orientar al grupo</p>
+                        <p><strong>Comunicación:</strong> Claridad en callouts y respeto al turno de palabra</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 8: Fuentes de Scouting -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Fuentes de Scouting</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Partidas Clasificatorias</h4>
+                        <p><strong>Ranked:</strong> Partidas internas del juego con divisiones o puntajes para detectar jugadores con estadísticas consistentes</p>
+                        <p><strong>FACEIT/Challengermode:</strong> Plataformas externas con emparejamiento preciso y datos extendidos</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Torneos Amateur</h4>
+                        <p><strong>Ligas locales:</strong> Organizadas por universidades o centros culturales con presión moderada</p>
+                        <p><strong>Equipos comunitarios:</strong> Torneos de streamers y canales de YouTube para observar comportamientos semi-profesionales</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Plataformas Especializadas</h4>
+                        <p><strong>Discord:</strong> Servidores oficiales con convocatorias de tryouts</p>
+                        <p><strong>Reddit y foros:</strong> Subreddits locales con jugadores buscando equipos</p>
+                        <p><strong>Twitter:</strong> Hashtags como #esportsARG para descubrir clips y perfiles emergentes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 9: Proceso de Tryouts -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Proceso de Tryouts</h2>
+                <h3>Diseño de Ejercicios y Métricas</h3>
+                <ul>
+                    <li><strong>Drills individuales:</strong> Sesiones cortas de puntería (Aim Lab) o ejecución de combos en entornos de práctica</li>
+                    <li><strong>Dinámicas grupales:</strong> Mini-scrims con roles rotativos para evaluar adaptación y comunicación</li>
+                    <li><strong>KDA:</strong> Relación entre bajas, muertes y asistencias</li>
+                    <li><strong>Precisión:</strong> Porcentaje de disparos o habilidades que impactan</li>
+                    <li><strong>Tiempos de reacción:</strong> Rapidez de respuesta ante estímulos</li>
+                    <li><strong>Participación en objetivos:</strong> Apoyo en torres, objetivos neutrales y cobertura de zonas</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 10: Modelo de Desarrollo de Equipos (Tuckman) -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Modelo de Desarrollo de Equipos</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>1. Formación (Forming)</h4>
+                        <p>Etapa inicial tras tryouts. Dinámicas de bienvenida, definición de expectativas y reglas básicas. Team-building con partidas cooperativas.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>2. Conflicto (Storming)</h4>
+                        <p>Surgen diferencias de personalidad o estilo. El coach detecta fricciones y aplica dinámicas de resolución de conflictos.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>3. Normalización (Norming)</h4>
+                        <p>El equipo acuerda normas internas: protocolos de callouts, roles de liderazgo y pautas de respeto. Aumenta la cohesión.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>4. Rendimiento (Performing)</h4>
+                        <p>El roster despliega sinergias fluidas en scrims y torneos. Ajustes tácticos sin perder cohesión. Pico de rendimiento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 11: Modalidades de Trabajo -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Modalidades de Trabajo e Infraestructura</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Gaming Office</h4>
+                        <p>Centro de entrenamiento con PCs de alta gama y internet de baja latencia. Separa vida personal del entorno competitivo.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Gaming House</h4>
+                        <p>Vivienda compartida 24/7. Inmersión total y desarrollo acelerado de cohesión. Requiere gestión de convivencia.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Equipos Online</h4>
+                        <p>Entrenamiento desde casa. Requiere alta autonomía y herramientas de supervisión. Opción económica y flexible.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Bootcamp</h4>
+                        <p>Concentración intensiva 2-4 semanas antes de torneos importantes. Enfoque máximo y adaptación a entornos de competición.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 12: Mapeo de Roles según Género -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Mapeo de Roles según Género</h2>
+                <h3>FPS (First-Person Shooter)</h3>
+                <ul>
+                    <li><strong>Entry-fragger:</strong> Jugador que "entra primero" creando espacio para el equipo</li>
+                    <li><strong>Lurker:</strong> Se separa para flanquear o asegurar bajas inesperadas</li>
+                    <li><strong>Support:</strong> Especializado en granadas de humo, flash e incendiarias</li>
+                    <li><strong>AWPer/IGL:</strong> Francotirador de élite que coordina estrategia en tiempo real</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 13: Roles MOBA y Battle Royale -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Roles: MOBA y Battle Royale</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>MOBA</h4>
+                        <p><strong>Top-laner:</strong> Controla línea lateral con personajes resistentes</p>
+                        <p><strong>Jungler:</strong> Se mueve por la jungla, recoge objetivos y realiza ganks</p>
+                        <p><strong>Mid-laner:</strong> Línea central con personajes de alto daño</p>
+                        <p><strong>ADC:</strong> Daño físico a distancia para late game</p>
+                        <p><strong>Soporte:</strong> Cuida al ADC, proporciona curaciones y visión</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Battle Royale</h4>
+                        <p><strong>IGL:</strong> Líder que maneja macro game y toma decisiones rápidas</p>
+                        <p><strong>Support:</strong> Apoya al equipo con utilidades y observación del juego</p>
+                        <p><strong>Fragger:</strong> Consigue eliminaciones, ejerce presión y limpia layers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 14: Equilibrio y Comunicación -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Equilibrio y Comunicación</h2>
+                <h3>Complementar Habilidades</h3>
+                <ul>
+                    <li><strong>Pushers vs Anchors:</strong> Balance entre presión constante y contención defensiva</li>
+                    <li><strong>Roles de liderazgo:</strong> Líder principal, coach y co-líder para distribución de responsabilidades</li>
+                    <li><strong>Soporte emocional:</strong> Keeper con alta inteligencia emocional para mantener moral del equipo</li>
+                </ul>
+                <h3>Dinámicas de Comunicación</h3>
+                <ul>
+                    <li><strong>Protocolo de callouts:</strong> Vocabulario estandarizado para posiciones y acciones</li>
+                    <li><strong>Cadenas de mando:</strong> Estructura clara entre In-Game Coach, IGL y Co-líder</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 15: Ejercicios de Sinergia -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Ejercicios de Sinergia</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>MOBA</h4>
+                        <p><strong>Team fights:</strong> Coordinación de habilidades en disputas de dragones o barones</p>
+                        <p><strong>Objetivos neutrales:</strong> Definir quién inicia, quién sigue con daño y quién cierra</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>FPS</h4>
+                        <p><strong>Triple peek:</strong> Tres jugadores entran en secuencia para saturar la defensa</p>
+                        <p><strong>Rotate-and-retake:</strong> Reentrada conjunta para recuperar control de puntos</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Battle Royale</h4>
+                        <p><strong>Reagrupamientos:</strong> Coordinación bajo fuego cuando el equipo está disperso</p>
+                        <p><strong>Rotaciones:</strong> Movimiento táctico a zona muerta y control de high/low ground</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 16: Cultura de Equipo -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Cohesión y Cultura de Equipo</h2>
+                <h3>Valores y Rituales</h3>
+                <ul>
+                    <li><strong>Respeto:</strong> Turnos de palabra en sala de voz, escucha activa</li>
+                    <li><strong>Feedback inmediato:</strong> Correcciones constructivas enfocadas en la acción</li>
+                    <li><strong>Compromiso:</strong> Puntualidad y respeto por el plan definido</li>
+                </ul>
+                <h3>Rituales Pre-partida</h3>
+                <ul>
+                    <li><strong>Charla motivacional:</strong> 5 minutos antes de entrenar o competir</li>
+                    <li><strong>Warm-up grupal:</strong> Ejercicios de mecánicas básicas en conjunto</li>
+                    <li><strong>Canciones de equipo:</strong> Música para crear estado mental positivo</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 17: Métricas de Evaluación -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Métricas de Evaluación (KPIs)</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Métricas Cuantitativas</h4>
+                        <p><strong>Win-rate:</strong> Porcentaje de victorias por mapa o composición</p>
+                        <p><strong>Precisión:</strong> Porcentaje de disparos que impactan al enemigo</p>
+                        <p><strong>Participación:</strong> Intervención en objetivos clave del juego</p>
+                        <p><strong>KDA:</strong> Relación entre bajas, muertes y asistencias</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Métricas Cualitativas</h4>
+                        <p><strong>Comunicación:</strong> Claridad, timing y relevancia de callouts</p>
+                        <p><strong>Liderazgo:</strong> Capacidad de iniciativa en situaciones críticas</p>
+                        <p><strong>Adaptación:</strong> Rapidez para incorporar feedback y cambios</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 18: Herramientas y Planes de Mejora -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Herramientas y Planes de Mejora</h2>
+                <h3>Herramientas de Registro</h3>
+                <ul>
+                    <li><strong>OBS:</strong> Grabación de partidas completas con múltiples pistas de audio</li>
+                    <li><strong>Overwolf:</strong> Aplicaciones personalizadas para análisis en tiempo real</li>
+                    <li><strong>Plataformas:</strong> Faceit Analytics, Blitz.gg, Tracker.gg para estadísticas comparativas</li>
+                </ul>
+                <h3>Planes Personalizados</h3>
+                <ul>
+                    <li><strong>Diagnóstico:</strong> Identificación de debilidades específicas con base en métricas</li>
+                    <li><strong>Ejercicios:</strong> Aim Lab, mapas de Workshop, drills de macro-game</li>
+                    <li><strong>Metas SMART:</strong> Específicas, medibles, alcanzables, relevantes y temporales</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Diapositiva 19: Salud y Variables Psicológicas -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Salud y Variables Psicológicas</h2>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Salud Física</h4>
+                        <p><strong>Ergonomía:</strong> Protocolos de postura, sillas ergonómicas, pausas activas cada 45-60 minutos</p>
+                        <p><strong>Nutrición:</strong> Proteínas magras, evitar picos de glucemia antes de entrenar</p>
+                        <p><strong>Sueño:</strong> Al menos 7 horas continuas, horarios regulares</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Bienestar Mental</h4>
+                        <p><strong>Autoeficacia:</strong> Tests de confianza y actividades de refuerzo positivo</p>
+                        <p><strong>Entrenamiento cognitivo:</strong> Apps de atención, memoria y toma de decisiones</p>
+                        <p><strong>Coaching mental:</strong> Técnicas de visualización, mindfulness y control del estrés</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 20: Conclusión -->
+        <div class="slide">
+            <div class="logo-space">
+                Logo<br>146x82px
+            </div>
+            <div class="content">
+                <h2>Conclusión</h2>
+                <p class="intro-text">
+                    La construcción de un <span class="highlight">roster balanceado</span> no es una tarea mecánica, sino un ejercicio de <span class="highlight">anticipación y ajuste constante</span>. El éxito en eSports depende tanto de la calidad individual como de la gestión de la transición entre formación, conflicto, normalización y "performing" en entornos de alta presión.
+                </p>
+                <p class="intro-text">
+                    El <span class="highlight">coaching integral</span> —desde el Head Coach que diseña la visión estratégica hasta el In-Game Coach que ejecuta en tiempo real— combinado con un sistema de KPIs y seguimiento de metas SMART, convierte al coaching en un motor de adaptación y resiliencia.
+                </p>
+                <p class="intro-text">
+                    Este <span class="highlight">enfoque holístico</span>, que incluye salud física, variables psicológicas y entrenamiento cognitivo, es el verdadero catalizador que transforma un grupo de talentos individuales en un equipo cohesionado capaz de rendir bajo cualquier circunstancia competitiva.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="previousSlide()">← Anterior</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Siguiente →</button>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+            
+            document.getElementById('currentSlide').textContent = index + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides - 1) {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

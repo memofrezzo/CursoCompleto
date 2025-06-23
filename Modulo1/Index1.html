@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia y Entrenamiento en eSports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(ellipse at center, #0f0f23 0%, #000 70%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slides-wrapper {
+            display: flex;
+            width: calc(100% * 10);
+            height: 100%;
+            transform: translateX(0);
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slide {
+            width: calc(100% / 10);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: linear-gradient(135deg, 
+                rgba(15, 15, 35, 0.9) 0%, 
+                rgba(25, 25, 45, 0.8) 50%, 
+                rgba(35, 35, 65, 0.7) 100%);
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(90deg, transparent 0%, rgba(0, 255, 255, 0.02) 50%, transparent 100%),
+                linear-gradient(0deg, transparent 0%, rgba(255, 0, 255, 0.02) 50%, transparent 100%);
+            pointer-events: none;
+        }
+
+        /* PORTADA */
+        .cover-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        .cover-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+            background-size: 400% 400%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .cover-subtitle {
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* SLIDES DE CONTENIDO */
+        .content-slide {
+            padding: 3rem 4rem;
+            justify-content: flex-start;
+        }
+
+        .slide-header {
+            border-bottom: 2px solid rgba(0, 255, 255, 0.6);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-content {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 255, 255, 0.3) transparent;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .content-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ff00ff;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-left: 4px solid #00ffff;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .role-card {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .role-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffff00;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .strategy-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-top: 3px solid #00ffff;
+        }
+
+        .strategy-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .strategy-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        /* NAVEGACIÓN */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            color: #ffffff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(255, 0, 255, 0.3));
+            border-color: rgba(0, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .slide-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* EFECTOS DE FONDO */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100px 100px;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    
+    <div class="presentation-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            
+            <!-- PORTADA -->
+            <div class="slide cover-slide">
+                <h1 class="cover-title">Estrategia y<br>Entrenamiento<br>en eSports</h1>
+                <p class="cover-subtitle">Fundamentos del Entrenamiento Profesional</p>
+            </div>
+
+            <!-- SLIDE 1: FUNDAMENTOS -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">Fundamentos del Entrenamiento</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="highlight-box">
+                        <p class="content-text">Los deportes electrónicos han evolucionado hasta convertirse en un campo altamente profesionalizado, adoptando estructuras y prácticas de los deportes tradicionales.</p>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h3 class="section-title">Profesionalización de los eSports</h3>
+                        <p class="content-text">Los equipos de eSports están formados por jugadores talentosos y un elenco de profesionales que incluye entrenadores, analistas tácticos, preparadores físicos, psicólogos deportivos y otros especialistas. Esta profesionalización ha transformado a los eSports en una industria seria, con torneos que ofrecen premios millonarios y atraen audiencias globales.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Más Allá del Juego</h3>
+                        <p class="content-text">El entrenamiento en eSports implica una combinación de habilidades técnicas dentro del juego, acondicionamiento físico para soportar largas sesiones de práctica y competición, y preparación mental para manejar la presión de los eventos de alta presión.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Videojuegos vs eSports</h3>
+                        <p class="content-text">Un videojuego puede ser cualquier actividad recreativa jugada en una plataforma digital. Los eSports son competiciones organizadas que convierten esos videojuegos en un espectáculo competitivo con reglas claras, formatos establecidos y un nivel de profesionalismo comparable al de ligas deportivas tradicionales.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: ROL DEL ENTRENADOR -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">El Rol del Entrenador</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="highlight-box">
+                        <p class="content-text">El entrenador principal no se limita a dar órdenes; su trabajo abarca la creación de estrategias de equipo, la planificación de rutinas diarias y la supervisión del desarrollo tanto individual como colectivo.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Responsabilidades del Coach</h3>
+                        <p class="content-text">Un buen coach analiza partidas pasadas, identifica patrones en el desempeño de los jugadores y ajusta las tácticas para enfrentar a los oponentes. Además, fomenta la cohesión del equipo, asegurándose de que los jugadores trabajen como una unidad bien coordinada.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Desarrollo de Autonomía</h3>
+                        <p class="content-text">El entrenamiento promueve la autonomía de los jugadores. En lugar de depender únicamente de instrucciones directas, los coaches guían a los competidores para que analicen sus propias decisiones, reconozcan sus errores y encuentren soluciones por sí mismos.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Pensamiento Crítico</h3>
+                        <p class="content-text">Este proceso no solo mejora las habilidades técnicas, sino que también desarrolla la capacidad de pensar críticamente bajo presión, una cualidad invaluable en el calor de la competición.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: ROLES EN EL EQUIPO -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">Roles dentro del Equipo</h2>
+                </div>
+                <div class="slide-content">
+                    <p class="content-text">Un equipo de eSports competitivo es mucho más que un grupo de jugadores y un entrenador. En las organizaciones de élite, se emplea a una amplia gama de especialistas que trabajan juntos para maximizar el potencial del equipo.</p>
+                    
+                    <div class="roles-grid">
+                        <div class="role-card">
+                            <div class="role-title">Head Coach</div>
+                            <div class="role-description">Entrenador principal responsable de la visión global y el desarrollo a largo plazo. Diseña estrategias y supervisa el progreso individual y colectivo.</div>
+                        </div>
+                        
+                        <div class="role-card">
+                            <div class="role-title">In-Game Coach</div>
+                            <div class="role-description">Acompaña al equipo durante las partidas, emitiendo calls en tiempo real y dando recomendaciones tácticas bajo presión.</div>
+                        </div>
+                        
+                        <div class="role-card">
+                            <div class="role-title">Managers</div>
+                            <div class="role-description">Se encargan de la logística, organizan viajes a torneos, gestionan contratos y negocian con patrocinadores.</div>
+                        </div>
+                        
+                        <div class="role-card">
+                            <div class="role-title">Preparadores Físicos</div>
+                            <div class="role-description">Diseñan programas para prevenir lesiones como el síndrome del túnel carpiano y mantener la salud física general.</div>
+                        </div>
+                        
+                        <div class="role-card">
+                            <div class="role-title">Psicólogos Deportivos</div>
+                            <div class="role-description">Ayudan a desarrollar una mentalidad competitiva, manejando el estrés y las emociones en momentos críticos.</div>
+                        </div>
+                        
+                        <div class="role-card">
+                            <div class="role-title">Analistas Tácticos</div>
+                            <div class="role-description">Estudian partidas del equipo y rivales, analizando estadísticas para identificar fortalezas y debilidades.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: MINDSET COMPETITIVO -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">Mindset Competitivo</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="highlight-box">
+                        <p class="content-text">En los eSports, las habilidades técnicas no son suficientes para alcanzar el éxito. La preparación mental es un factor determinante que separa a los competidores promedio de los campeones.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Construcción de Mentalidad</h3>
+                        <p class="content-text">Los jugadores emplean técnicas como la visualización, donde imaginan escenarios de juego y ensayan mentalmente sus respuestas. También utilizan ejercicios de respiración controlada para mantener la calma durante momentos de alta tensión.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Entrenamiento Invisible</h3>
+                        <p class="content-text">Los equipos profesionales integran el entrenamiento invisible, que incluye técnicas psicológicas, descanso adecuado y nutrición balanceada. Dormir bien y comer alimentos que potencien la energía y la claridad mental son tan importantes como practicar el juego en sí.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Preparación Integral</h3>
+                        <p class="content-text">Un equipo preparándose para un torneo importante dedicará tiempo a ejercicios de relajación para reducir la ansiedad previa al evento. El psicólogo del equipo podría liderar sesiones para reforzar la confianza, mientras que el entrenador ajusta el cronograma para incluir descansos que eviten el agotamiento.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: DESARROLLO DE ESTRATEGIAS -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">Desarrollo de Estrategias</h2>
+                </div>
+                <div class="slide-content">
+                    <p class="content-text">Las estrategias en eSports varían ampliamente según el género del juego, y cada uno presenta desafíos únicos que requieren enfoques tácticos distintos.</p>
+                    
+                    <div class="strategy-grid">
+                        <div class="strategy-card">
+                            <div class="strategy-title">FPS (First-Person Shooters)</div>
+                            <div class="strategy-text">La estrategia se centra en el control del mapa y la coordinación del equipo. Los jugadores deben dominar áreas clave para avanzar o defender objetivos, utilizando herramientas como granadas y humo para desorientar al enemigo.</div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-title">MOBA</div>
+                            <div class="strategy-text">Requieren una estrategia basada en objetivos a largo plazo y trabajo en equipo. Los jugadores eligen personajes con roles específicos y trabajan juntos para controlar recursos como el oro y la experiencia.</div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-title">Battle Royale</div>
+                            <div class="strategy-text">La estrategia comienza con la elección del lugar de aterrizaje y la recolección de equipo. Los equipos deben moverse constantemente para mantenerse dentro de una zona segura que se reduce con el tiempo.</div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-title">Juegos de Lucha</div>
+                            <div class="strategy-text">Los jugadores estudian las fortalezas y debilidades de los personajes, anticipan los movimientos del oponente y buscan oportunidades para atacar. Engañar al rival con patrones impredecibles es clave.</div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card">
+                        <div class="strategy-title">Juegos Deportivos</div>
+                        <div class="strategy-text">Simuladores como FIFA y Rocket League trasladan tácticas del deporte real al mundo virtual. En FIFA se entrenan formaciones, jugadas a balón parado y control de posesión; en Rocket League, el posicionamiento, las mecánicas y las rotaciones 3v3 son clave.</div>
+                      </div>
+                </div>
+            </div>
+            <!-- SLIDE 6: EJEMPLOS DE ESTRATEGIAS -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">Ejemplos de Estrategias por Género</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="highlight-box">
+                        <p class="content-text">Para que los conceptos estratégicos resulten verdaderamente útiles, veamos cómo se aplican en la práctica dentro de algunos de los géneros más populares de eSports.</p>
+                    </div>
+                    
+                    <div class="strategy-grid">
+                        <div class="strategy-card">
+                            <div class="strategy-title">Counter-Strike: Global Offensive</div>
+                            <div class="strategy-text">El "Split A" en Dust II: tres jugadores avanzan por "Long A" con granadas de humo, mientras otros dos flanquean por "Catwalk". Requiere coordinación precisa y comunicación constante con frases como "humo en CT" o "flanqueando por short".</div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-title">League of Legends</div>
+                            <div class="strategy-text">El "split push": un jugador presiona una línea lateral para destruir torres, obligando al rival a dividirse. El resto del equipo puede acercarse al Dragón o preparar una pelea en superioridad numérica.</div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-title">Fortnite</div>
+                            <div class="strategy-text">El "box fighting" en etapas finales: construcción rápida de estructuras para protección en espacios cerrados, optimizando materiales y evitando third parties. La práctica en modo Creativo mejora la velocidad de construcción.</div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-title">Street Fighter V</div>
+                            <div class="strategy-text">Con Ryu: usar Hadoukens para mantener distancia, obligar al oponente a saltar y castigar con Shoryuken. Se basa en leer patrones del rival y mantener paciencia para el momento justo.</div>
+                        </div>
+                        
+                        <div class="strategy-card">
+                            <div class="strategy-title">Rocket League</div>
+                            <div class="strategy-text">Rotación 3v3: un jugador ataca, otro se posiciona para pases, el tercero en defensa. Requiere comunicación fluida y conciencia espacial para saber cuándo atacar, retroceder o cubrir.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7: COMUNICACIÓN EN ESPORTS -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">La Importancia de la Comunicación</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="highlight-box">
+                        <p class="content-text">La comunicación es el eje que sostiene las estrategias del equipo. Sin ella, cualquier plan se desarma en segundos.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Comunicación en FPS</h3>
+                        <p class="content-text">En CS:GO, frases efectivas como "enemigo en B tuns" o "flasheado en mid" transmiten información crucial sobre presencia y estado del rival. Al ser breves y claras, permiten reacciones inmediatas.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Comunicación en MOBAs</h3>
+                        <p class="content-text">En Dota 2, la comunicación forma parte del plan global. Frases como "vamos por Roshan en dos minutos" o "retrocedan, nos están flanqueando" reflejan coordinación táctica y prevención de errores.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Comunicación No Verbal</h3>
+                        <p class="content-text">En juegos de pelea, el cambio de postura anticipa estrategias del rival. En Rocket League, la posición del auto indica si vas a atacar o defender. Estas señales permiten jugar sin decir una palabra en momentos críticos.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Entrenamiento Comunicativo</h3>
+                        <p class="content-text">Los simulacros con frases clave reducen la charla superflua y mejoran la eficiencia. Cada mensaje debe ser claro, corto y aportar información valiosa, fortaleciendo tanto la ejecución como la confianza del equipo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8: CASOS DE ESTUDIO -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">Casos de Estudio: Equipos Exitosos</h2>
+                </div>
+                <div class="slide-content">
+                    <p class="content-text">Analizar cómo piensan y entrenan los mejores equipos sirve para comprender qué se necesita para alcanzar la cima competitiva.</p>
+                    
+                    <div class="roles-grid">
+                        <div class="role-card">
+                            <div class="role-title">Astralis (CS:GO)</div>
+                            <div class="role-description">
+                                <strong>Innovación Táctica:</strong> Convirtieron el uso de granadas en ciencia, midiendo coordenadas exactas en el mapa.<br><br>
+                                <strong>Metodología:</strong> Bajo Danny "zonic" Sørensen, crearon una biblioteca táctica con variantes para cada ronda.<br><br>
+                                <strong>Apoyo Integral:</strong> Incorporaron apoyo psicológico para mantener el enfoque durante torneos largos.<br><br>
+                                <strong>Resultados:</strong> Cuatro Majors entre 2016 y 2019.
+                            </div>
+                        </div>
+                        
+                        <div class="role-card">
+                            <div class="role-title">T1 / SK Telecom T1 (LoL)</div>
+                            <div class="role-description">
+                                <strong>Liderazgo Estratégico:</strong> kkOma construyó el roster alrededor de Faker con práctica estructurada.<br><br>
+                                <strong>Análisis Profundo:</strong> Estudian picks de campeones rivales y ajustan composiciones de draft.<br><br>
+                                <strong>Adaptabilidad:</strong> Modifican su estilo según cada oponente específico.<br><br>
+                                <strong>Logros:</strong> Tres títulos mundiales (2013, 2015, 2016) y dominio continuo en LCK.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Factores Clave del Éxito</h3>
+                        <p class="content-text">Ambos equipos demuestran que la excelencia no se basa solo en habilidad individual, sino en metodología estructurada, análisis constante, apoyo multidisciplinario y adaptación continua a las evoluciones del meta competitivo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9: CONCLUSIÓN -->
+            <div class="slide content-slide">
+                <div class="slide-header">
+                    <h2 class="slide-title">Conclusión</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="highlight-box">
+                        <p class="content-text">La excelencia competitiva en eSports no se alcanza meramente con habilidad mecánica o conocimiento táctico, sino con la construcción de un criterio propio sólido.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Desarrollo del Criterio</h3>
+                        <p class="content-text">Este programa está concebido para forjar ese criterio interno que permite a cada jugador y entrenador discernir cuándo aplicar una táctica, cómo ajustar sobre la marcha y qué áreas priorizar en su entrenamiento.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Formación Integral</h3>
+                        <p class="content-text">Un buen criterio se nutre de la experiencia práctica, del análisis constante de datos objetivos y de la reflexión crítica sobre cada victoria o derrota. Es el motor que impulsa la toma de decisiones acertadas en los momentos más tensos de la competencia.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Autonomía de Juicio</h3>
+                        <p class="content-text">El verdadero valor radica en desarrollar la capacidad de evaluar fortalezas y debilidades, interpretar estadísticas de rendimiento y elegir la estrategia más conveniente según el contexto de juego.</p>
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="section-title">Visión Profesional</h3>
+                        <p class="content-text">Al entrenar la mente tanto como el cuerpo y las manos, y al fortalecer el criterio personal, sentamos las bases para enfrentar cualquier desafío competitivo con confianza, efectividad y la capacidad reflexiva necesaria para el éxito sostenido.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-indicator" id="slideIndicator">1 / 6</div>
+    
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Anterior</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Siguiente →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 10;
+
+        function updateSlideIndicator() {
+            document.getElementById('slideIndicator').textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            
+            if (newSlide >= 0 && newSlide < totalSlides) {
+                currentSlide = newSlide;
+                const translateX = -(currentSlide * (100 / totalSlides));
+                document.getElementById('slidesWrapper').style.transform = `translateX(${translateX}%)`;
+                
+                updateSlideIndicator();
+                updateNavigationButtons();
+            }
+        }
+
+        // Inicializar
+        updateSlideIndicator();
+        updateNavigationButtons();
+
+        // Navegación con teclado
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                changeSlide(1);
+            } else if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Videojuegos vs eSports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            display: grid;
+            grid-template-rows: 80px 1fr;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f3460 0%, #e94560 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid #00d2ff;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 210, 255, 0.1) 2px,
+                rgba(0, 210, 255, 0.1) 4px
+            );
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
+            z-index: 1;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background: #00d2ff;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            opacity: 0.8;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100%;
+            gap: 2px;
+            background: #000;
+        }
+
+        .section {
+            background: #1a1a2e;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .videogames-section {
+            border-left: 5px solid #00ff88;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, #1a1a2e 100%);
+        }
+
+        .esports-section {
+            border-left: 5px solid #e94560;
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.1) 0%, #1a1a2e 100%);
+        }
+
+        .section::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, rgba(0, 210, 255, 0.5), transparent);
+        }
+
+        .section-header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .videogames-section .section-title {
+            color: #00ff88;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+        }
+
+        .esports-section .section-title {
+            color: #e94560;
+            text-shadow: 0 0 15px rgba(233, 69, 96, 0.6);
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+
+        .definition-box {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+
+    /* Le decimos que tenga al menos 250px de alto */
+    min-height: 250px;
+
+    /* Si prefieres forzar exactamente 250px, usa height en lugar de min-height */
+    /* height: 250px; */
+
+    /* flex: 1;  <-- puedes seguir manteniéndolo si quieres que crezcan de forma proporcional */
+}
+
+        .videogames-section .definition-box {
+            border-left: 3px solid #00ff88;
+        }
+
+        .esports-section .definition-box {
+            border-left: 3px solid #e94560;
+        }
+
+        .definition-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            color: #00d2ff;
+        }
+
+        .definition-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: justify;
+        }
+
+        .key-features {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .videogames-section .key-features {
+            border-left: 3px solid #00ff88;
+        }
+
+        .esports-section .key-features {
+            border-left: 3px solid #e94560;
+        }
+
+        .features-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .videogames-section .features-title {
+            color: #00ff88;
+        }
+
+        .esports-section .features-title {
+            color: #e94560;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .videogames-section .feature-item {
+            border-left: 2px solid #00ff88;
+        }
+
+        .esports-section .feature-item {
+            border-left: 2px solid #e94560;
+        }
+
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .vs-divider {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00d2ff, #e94560);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            z-index: 10;
+            border: 3px solid #000;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="container">
+        <div class="header">
+            <h1>VIDEOJUEGOS VS ESPORTS</h1>
+        </div>
+        
+        <div class="main-content">
+            <div class="vs-divider">VS</div>
+            
+            <div class="section videogames-section">
+                <div class="section-header">
+                    <h2 class="section-title">VIDEOJUEGOS</h2>
+                    <p class="section-subtitle">Entretenimiento Digital</p>
+                </div>
+                
+                <div class="content-area">
+                    <div class="definition-box">
+                        <h3 class="definition-title">¿Qué es un videojuego?</h3>
+                        <p class="definition-text">
+                            Un videojuego es un software que combina múltiples tecnologías y disciplinas artísticas para crear un mundo de ficción lúdico con reglas y objetivos, por lo general implícitos, en el que uno o varios jugadores interactúan de forma continua mediante una interfaz.
+                        </p>
+                    </div>
+                    
+                    <div class="key-features">
+                        <h4 class="features-title">Elementos del Videojuego</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">Software: tecnologías y disciplinas artísticas</div>
+                            <div class="feature-item">Mundo: ficción lúdica con reglas implícitas</div>
+                            <div class="feature-item">Jugador: Interacción continua</div>
+                            <div class="feature-item">Interfaz: medio de comunicación</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section esports-section">
+                <div class="section-header">
+                    <h2 class="section-title">ESPORTS</h2>
+                    <p class="section-subtitle">Competición Profesional</p>
+                </div>
+                
+                <div class="content-area">
+                    <div class="definition-box">
+                        <h3 class="definition-title">¿Qué es un eSport?</h3>
+                        <p class="definition-text">
+                            Los esports son una práctica de entretenimiento y competición digital basada en videojuegos, en la que los participantes interactúan para desarrollar y demostrar sus habilidades. Estas competiciones se rigen por reglamentos claros, mantienen un carácter lúdico esencial y están respaldadas por estructuras institucionales —ligas, organizaciones y patrocinios— que garantizan su profesionalización e igualdad de condiciones.
+                        </p>
+                    </div>
+                    
+                    <div class="key-features">
+                        <h4 class="features-title">Características Clave</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">Competición Organizada</div>
+                            <div class="feature-item">Reglamentos Claros</div>
+                            <div class="feature-item">Profesionalización</div>
+                            <div class="feature-item">Estructuras Institucionales</div>
+                            <div class="feature-item">Demostración de Habilidad</div>
+                            <div class="feature-item">Patrocinios y Ligas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Géneros de Deportes Electrónicos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: 80px 1fr;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f3460 0%, #e94560 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid #00d2ff;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 210, 255, 0.1) 2px,
+                rgba(0, 210, 255, 0.1) 4px
+            );
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(0, 210, 255, 0.8);
+            z-index: 1;
+            position: relative;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+            }
+            
+            .right-panel {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+            }
+            
+            .genre-card {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+            }
+            
+            .genre-title-section {
+                padding: 15px;
+                text-align: center;
+            }
+            
+            .genre-description {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .genre-title {
+                font-size: 1.4rem;
+            }
+            
+            .variables-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .right-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .genres-section {
+            display: grid;
+            grid-template-rows: repeat(4, 1fr);
+            gap: 2px;
+            background: #000;
+        }
+
+        .genre-card {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            background: #1a1a2e;
+            border-left: 5px solid;
+            position: relative;
+        }
+
+        .genre-card::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, rgba(0, 210, 255, 0.5), transparent);
+        }
+
+        .moba {
+            border-left-color: #00ff88;
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.1) 0%, #1a1a2e 100%);
+        }
+
+        .deportes {
+            border-left-color: #ff6b35;
+            background: linear-gradient(90deg, rgba(255, 107, 53, 0.1) 0%, #1a1a2e 100%);
+        }
+
+        .fps {
+            border-left-color: #ff3838;
+            background: linear-gradient(90deg, rgba(255, 56, 56, 0.1) 0%, #1a1a2e 100%);
+        }
+
+        .battle-royale {
+            border-left-color: #ffd700;
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, #1a1a2e 100%);
+        }
+
+        .genre-title-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .genre-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .genre-subtitle {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .genre-description {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .right-panel {
+            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
+            display: grid;
+            grid-template-rows: 300px 1fr;
+            gap: 2px;
+        }
+
+        .games-section {
+            background: rgba(0, 210, 255, 0.1);
+            border-left: 2px solid #00d2ff;
+            min-height: 300px;
+        }
+
+        .variables-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-left: 2px solid #e94560;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #00d2ff;
+            border-bottom: 2px solid #00d2ff;
+            padding-bottom: 8px;
+        }
+
+        .variables-section .section-title {
+            color: #e94560;
+            border-bottom-color: #e94560;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            height: calc(100% - 60px);
+        }
+
+        .game-slot {
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(0, 0, 0, 0.5));
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+        }
+
+        .variables-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            padding: 15px;
+        }
+
+        .variable-item {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(0, 0, 0, 0.5));
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .variable-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.5px;
+        }
+
+        /* Hexagonal decorative elements */
+        .header::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            opacity: 0.8;
+        }
+
+        .cyber-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="container">
+        <div class="header">
+            <h1>GÉNEROS DE DEPORTES ELECTRÓNICOS</h1>
+        </div>
+        
+        <div class="main-content">
+            <div class="genres-section">
+                <div class="genre-card moba">
+                    <div class="genre-title-section">
+                        <h2 class="genre-title">MOBA</h2>
+                        <p class="genre-subtitle">MULTIPLAYER ONLINE<br>BATTLE ARENA</p>
+                    </div>
+                    <div class="genre-description">
+                        Este género suele jugarse en un entorno con tres calles o carriles bien diferenciados más una zona denominada "jungla" que separa estos carriles. Para llegar a "la base" del rival hay que ir destruyendo las estructuras del rival que se encuentran en cada carril.
+                    </div>
+                </div>
+                
+                <div class="genre-card deportes">
+                    <div class="genre-title-section">
+                        <h2 class="genre-title">DEPORTES</h2>
+                        <p class="genre-subtitle">SPORTS SIMULATION</p>
+                    </div>
+                    <div class="genre-description">
+                        Es el reflejo de los deportes tradicionales en el mundo virtual. Son simulaciones de deportes tan conocidos como el fútbol, el baloncesto, las carreras de coches o incluso el baile.
+                    </div>
+                </div>
+                
+                <div class="genre-card fps">
+                    <div class="genre-title-section">
+                        <h2 class="genre-title">FPS</h2>
+                        <p class="genre-subtitle">FIRST PERSON<br>SHOOTER</p>
+                    </div>
+                    <div class="genre-description">
+                        Son los juegos en los que principalmente se ataca al rival con armas a distancia. La ambientación suele ser de corte bélico aunque puede estar enmarcado tanto en entornos realistas como de ciencia ficción. Normalmente el punto de vista del jugador suele ser en primera persona.
+                    </div>
+                </div>
+                
+                <div class="genre-card battle-royale">
+                    <div class="genre-title-section">
+                        <h2 class="genre-title">BATTLE<br>ROYALE</h2>
+                        <p class="genre-subtitle">LAST PLAYER STANDING</p>
+                    </div>
+                    <div class="genre-description">
+                        Consiste en un "todos contra todos" donde gana el último en quedar en pie. Son partidas en las que hay un número elevado de jugadores compitiendo a la vez.
+                    </div>
+                </div>
+            </div>         
+            </div>
+        </div>
+    </div>
+</body>
+</html> -->
+
