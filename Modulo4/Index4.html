@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicología Deportiva y Mentalidad Competitiva - eSports</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #0f0f23 30%, #1a1a2e 60%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(0, 255, 255, 0.02) 49%, rgba(0, 255, 255, 0.02) 51%, transparent 52%),
+                linear-gradient(-45deg, transparent 48%, rgba(255, 0, 255, 0.02) 49%, rgba(255, 0, 255, 0.02) 51%, transparent 52%);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .presentation-container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 2;
+            padding-bottom: 120px; /* Espacio para navegación */
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 146px;
+            height: 82px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background-clip: padding-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #00ffff;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            box-shadow: 
+                0 8px 32px rgba(0, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+            animation: logoScan 3s infinite;
+        }
+
+        .slide {
+            display: none;
+            flex: 1;
+            padding: 20px 40px 40px 40px;
+            position: relative;
+            overflow-y: auto;
+            max-height: calc(100vh - 120px); /* Ajustado para navegación */
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 20px;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: #00ffff;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.15) 0%, rgba(0, 255, 255, 0.05) 100%);
+            padding: 10px 18px;
+            border-radius: 25px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 5.5vw, 4.5rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff 0%, #ff00ff 25%, #ffff00 50%, #00ff00 75%, #00ffff 100%);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            margin-bottom: 35px;
+            text-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
+            letter-spacing: 2px;
+            position: relative;
+            line-height: 1.2;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            border-radius: 2px;
+            animation: underlineGlow 2s ease-in-out infinite alternate;
+        }
+
+        h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.8rem, 4.2vw, 3.2rem);
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 35px;
+            text-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+            letter-spacing: 1px;
+            position: relative;
+            line-height: 1.2;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -30px;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #00ffff 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.3rem, 3.2vw, 2.2rem);
+            font-weight: 600;
+            color: #ff00ff;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.6);
+            position: relative;
+            display: inline-block;
+            line-height: 1.3;
+        }
+
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #ff00ff, rgba(255, 0, 255, 0.3));
+            border-radius: 1px;
+        }
+
+        p, li {
+            font-size: clamp(1rem, 2.2vw, 1.5rem);
+            line-height: 1.7;
+            margin-bottom: 22px;
+            color: #e8e8e8;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        ul {
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        li {
+            margin-bottom: 18px;
+            padding-left: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        li:hover {
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        li::before {
+            content: "▶";
+            color: #00ffff;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            animation: arrowPulse 2s infinite;
+        }
+
+        .author-info {
+            margin-top: 50px;
+            font-size: 1.3rem;
+            color: #aaa;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #00ffff 0%, #0080ff 50%, #ff00ff 100%);
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 
+                0 8px 25px rgba(0, 255, 255, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            font-size: clamp(11px, 2vw, 14px);
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 
+                0 12px 35px rgba(0, 255, 255, 0.4),
+                0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.1);
+        }
+
+        .slide-indicator {
+            position: fixed;
+            bottom: 75px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: calc(100vw - 40px);
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .slide-indicator::-webkit-scrollbar {
+            display: none;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            flex-shrink: 0;
+            min-width: 12px;
+        }
+
+        .indicator-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: #00ffff;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot:hover {
+            transform: scale(1.2);
+            background: rgba(0, 255, 255, 0.3);
+        }
+
+        .indicator-dot.active {
+            background: rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+        }
+
+        .indicator-dot.active::before {
+            width: 4px;
+            height: 4px;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .circuit-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.8), rgba(255, 0, 255, 0.6), transparent);
+            height: 2px;
+            border-radius: 1px;
+            animation: circuitMove 12s linear infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .circuit-line:nth-child(1) {
+            top: 15%;
+            width: 250px;
+            animation-delay: 0s;
+        }
+
+        .circuit-line:nth-child(2) {
+            top: 45%;
+            width: 350px;
+            animation-delay: 3s;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 255, 0.8), rgba(0, 255, 255, 0.6), transparent);
+        }
+
+        .circuit-line:nth-child(3) {
+            top: 75%;
+            width: 200px;
+            animation-delay: 6s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.8), rgba(0, 255, 255, 0.6), transparent);
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(0, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 8s infinite linear;
+        }
+
+        .particle:nth-child(2) {
+            background: rgba(255, 0, 255, 0.6);
+            animation-delay: 2s;
+            animation-duration: 10s;
+        }
+
+        .particle:nth-child(3) {
+            background: rgba(255, 255, 0, 0.6);
+            animation-delay: 4s;
+            animation-duration: 12s;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 200% 50%; }
+            75% { background-position: 300% 50%; }
+        }
+
+        @keyframes circuitMove {
+            0% { left: -400px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: calc(100% + 50px); opacity: 0; }
+        }
+
+        @keyframes logoScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        @keyframes underlineGlow {
+            0% { opacity: 0.5; transform: translateX(-50%) scaleX(0.8); }
+            100% { opacity: 1; transform: translateX(-50%) scaleX(1); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(200px);
+                opacity: 0;
+            }
+        }
+
+        .highlight {
+            color: #00ffff;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+            position: relative;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: highlightPulse 2s infinite;
+        }
+
+        .emphasis {
+            color: #ff00ff;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .slide.entering {
+            animation: slideInRight 0.6s ease-out;
+        }
+
+        .slide.exiting {
+            animation: slideOutLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(100px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideOutLeft {
+            0% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(-100px); }
+        }
+
+        /* Tablet - pantallas medianas */
+        @media (max-width: 1024px) {
+            .slide-content {
+                max-width: 900px;
+            }
+            
+            ul {
+                max-width: 700px;
+                padding: 25px;
+            }
+            
+            .navigation {
+                max-width: 350px;
+                gap: 12px;
+            }
+            
+            h2::before {
+                left: -25px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        /* Móvil - pantallas pequeñas */
+        @media (max-width: 768px) {
+            .presentation-container {
+                padding-bottom: 140px; /* Más espacio para navegación móvil */
+            }
+            
+            .slide {
+                padding: 15px 20px 20px 20px;
+                justify-content: flex-start;
+                padding-top: 100px; /* Más espacio arriba para evitar solapamiento */
+                max-height: calc(100vh - 140px);
+            }
+            
+            .slide.active {
+                padding-top: 100px;
+            }
+            
+            .logo-container {
+                top: 15px;
+                right: 15px;
+                width: 100px;
+                height: 56px;
+                font-size: 9px;
+            }
+            
+            .slide-number {
+                top: 15px;
+                left: 15px;
+                font-size: 11px;
+                padding: 8px 12px;
+            }
+            
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+                max-width: calc(100vw - 30px);
+                padding: 0 15px;
+            }
+            
+            .nav-btn {
+                padding: 12px 18px;
+                font-size: clamp(10px, 2.5vw, 12px);
+            }
+            
+            .slide-indicator {
+                bottom: 65px;
+                gap: 6px;
+                padding: 8px 12px;
+            }
+            
+            .indicator-dot {
+                width: 10px;
+                height: 10px;
+                min-width: 10px;
+            }
+            
+            .indicator-dot.active::before {
+                width: 3px;
+                height: 3px;
+            }
+            
+            ul {
+                padding: 20px 15px;
+                margin: 0 10px;
+            }
+            
+            li {
+                padding-left: 20px;
+            }
+            
+            h1 {
+                font-size: clamp(1.5rem, 7vw, 3rem);
+                margin-bottom: 25px;
+                letter-spacing: 1px;
+            }
+            
+            h2 {
+                font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+                margin-bottom: 25px;
+            }
+            
+            h2::before {
+                left: -15px;
+                width: 12px;
+                height: 12px;
+            }
+            
+            h3 {
+                font-size: clamp(1.1rem, 4.5vw, 1.8rem);
+                margin-bottom: 20px;
+            }
+            
+            .author-info {
+                margin-top: 30px;
+                font-size: 1.1rem;
+                padding: 20px 15px;
+            }
+        }
+
+        /* Móvil pequeño - pantallas muy pequeñas */
+        @media (max-width: 480px) {
+            .slide {
+                padding: 10px 15px 15px 15px;
+                padding-top: 90px;
+            }
+            
+            .slide.active {
+                padding-top: 90px;
+            }
+            
+            .logo-container {
+                width: 80px;
+                height: 45px;
+                font-size: 8px;
+                top: 12px;
+                right: 12px;
+            }
+            
+            .slide-number {
+                top: 12px;
+                left: 12px;
+                font-size: 10px;
+                padding: 6px 10px;
+            }
+            
+            .navigation {
+                gap: 8px;
+                padding: 0 10px;
+            }
+            
+            .nav-btn {
+                padding: 10px 15px;
+                font-size: 10px;
+            }
+            
+            ul {
+                padding: 15px 12px;
+                margin: 0 5px;
+            }
+            
+            li {
+                padding-left: 18px;
+                font-size: 0.95rem;
+            }
+            
+            h1 {
+                font-size: clamp(1.2rem, 8vw, 2.5rem);
+                margin-bottom: 20px;
+            }
+            
+            h2 {
+                font-size: clamp(1.1rem, 6.5vw, 1.8rem);
+                margin-bottom: 20px;
+            }
+            
+            h2::before {
+                left: -12px;
+                width: 10px;
+                height: 10px;
+            }
+            
+            .author-info {
+                font-size: 1rem;
+                padding: 15px 12px;
+            }
+        }
+
+        /* Pantallas muy altas (móviles en vertical) */
+        @media (max-height: 600px) {
+            .slide {
+                justify-content: flex-start;
+                padding-top: 80px;
+                max-height: calc(100vh - 110px);
+            }
+            
+            .slide.active {
+                padding-top: 80px;
+            }
+            
+            .navigation {
+                bottom: 15px;
+            }
+            
+            .slide-indicator {
+                bottom: 60px;
+            }
+            
+            h1 {
+                margin-bottom: 20px;
+            }
+            
+            h2 {
+                margin-bottom: 20px;
+            }
+            
+            h3 {
+                margin-bottom: 15px;
+            }
+            
+            .author-info {
+                margin-top: 25px;
+            }
+        }
+
+        /* Pantallas muy bajas (landscape móvil) */
+        @media (max-height: 500px) {
+            .slide {
+                padding-top: 60px;
+                max-height: calc(100vh - 100px);
+            }
+            
+            .slide.active {
+                padding-top: 60px;
+            }
+            
+            .logo-container {
+                top: 10px;
+                right: 10px;
+                width: 70px;
+                height: 40px;
+                font-size: 7px;
+            }
+            
+            .slide-number {
+                top: 10px;
+                left: 10px;
+                font-size: 9px;
+                padding: 5px 8px;
+            }
+            
+            h1 {
+                font-size: clamp(1rem, 6vw, 2rem);
+                margin-bottom: 15px;
+            }
+            
+            h2 {
+                font-size: clamp(0.9rem, 5vw, 1.5rem);
+                margin-bottom: 15px;
+            }
+            
+            p, li {
+                font-size: clamp(0.85rem, 2vw, 1.2rem);
+                margin-bottom: 15px;
+            }
+            
+            ul {
+                padding: 15px;
+            }
+        }
+
+        /* Efectos de hover mejorados para dispositivos táctiles */
+        @media (hover: hover) {
+            .slide-content h2:hover {
+                color: #20ffff;
+                text-shadow: 0 0 30px rgba(32, 255, 255, 0.8);
+                transition: all 0.3s ease;
+            }
+            
+            .slide-content h3:hover {
+                color: #ff20ff;
+                text-shadow: 0 0 25px rgba(255, 32, 255, 0.8);
+                transition: all 0.3s ease;
+            }
+        }
+
+        /* Mejoras para accesibilidad en pantallas táctiles */
+        @media (pointer: coarse) {
+            .nav-btn {
+                min-height: 44px; /* Tamaño mínimo recomendado para táctil */
+            }
+            
+            .indicator-dot {
+                min-width: 44px;
+                min-height: 44px;
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .indicator-dot::before {
+                width: 8px;
+                height: 8px;
+            }
+            
+            .indicator-dot.active::before {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .slide-indicator {
+                gap: 4px;
+                padding: 5px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="logo-container">
+            LOGO
+            <br>
+            146x82
+        </div>
+        
+        <div class="background-animation">
+            <div class="circuit-line"></div>
+            <div class="circuit-line"></div>
+            <div class="circuit-line"></div>
+        </div>
+        
+        <div class="floating-particles">
+            <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 60%; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 80%; animation-delay: 6s;"></div>
+        </div>
+        
+        <!-- Slide 1: Portada -->
+        <div class="slide active">
+            <div class="slide-number">01 / 11</div>
+            <div class="slide-content">
+                <h1>PSICOLOGÍA DEPORTIVA</h1>
+                <h2>Y MENTALIDAD COMPETITIVA</h2>
+                <p style="font-size: 1.6rem; margin: 45px 0; color: #00ffff; text-shadow: 0 0 20px rgba(0, 255, 255, 0.6);">Módulo 4</p>
+                <div class="author-info">
+                    <p><strong>Autor:</strong> Alain Gerfauo</p>
+                    <p><strong>Fecha:</strong> 22/06/2025</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Introducción -->
+        <div class="slide">
+            <div class="slide-number">02 / 11</div>
+            <div class="slide-content">
+                <h2>INTRODUCCIÓN</h2>
+                <p>La mente de un competidor de eSports funciona como un <span class="highlight">motor de precisión</span> que, bajo presión, puede oscilar entre el mejor rendimiento y un atasco completo.</p>
+                <p>En este módulo exploraremos:</p>
+                <ul>
+                    <li><span class="emphasis">Manejo del estrés</span> y presión en competencias</li>
+                    <li><span class="emphasis">Rutinas saludables</span> para eSports</li>
+                    <li><span class="emphasis">Gestión emocional</span> y resiliencia</li>
+                </ul>
+                <p style="margin-top: 35px; font-style: italic; color: #ccc;">El juego que ocurre en la pantalla se nutre de lo que sucede en tu cabeza.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Manejo del Estrés -->
+        <div class="slide">
+            <div class="slide-number">03 / 11</div>
+            <div class="slide-content">
+                <h2>MANEJO DEL ESTRÉS Y PRESIÓN</h2>
+                <p>En torneos y scrims decisivos, la habilidad para gestionar las tensiones puede determinar el <span class="highlight">éxito o el fracaso</span>.</p>
+                <h3>Áreas Clave:</h3>
+                <ul>
+                    <li><span class="emphasis">Control de la ansiedad</span> en momentos críticos</li>
+                    <li><span class="emphasis">Técnicas de respiración</span>, relajación y visualización</li>
+                    <li><span class="emphasis">Preparación mental</span> previa a cada partido</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Control de Ansiedad -->
+        <div class="slide">
+            <div class="slide-number">04 / 11</div>
+            <div class="slide-content">
+                <h2>CONTROL DE LA ANSIEDAD</h2>
+                <p>La ansiedad es una reacción natural que se manifiesta como palpitaciones, sudoración, temblores o dificultades de concentración.</p>
+                <h3>Estrategias Efectivas:</h3>
+                <ul>
+                    <li><span class="emphasis">Planificación previa:</span> Familiarizarse con el formato del torneo y analizar oponentes</li>
+                    <li><span class="emphasis">Expectativas realistas:</span> Aceptar que no siempre se puede ganar</li>
+                    <li><span class="emphasis">Mindfulness:</span> Focalizarse en el presente y aceptar pensamientos sin juzgarlos</li>
+                </ul>
+                <p style="margin-top: 35px; color: #00ffff; font-weight: 600;">Ejemplo: <strong>N0tail</strong> de OG transformó la ansiedad en ventaja competitiva en The International.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Técnicas de Respiración -->
+        <div class="slide">
+            <div class="slide-number">05 / 11</div>
+            <div class="slide-content">
+                <h2>TÉCNICAS DE CONTROL CORPORAL</h2>
+                <h3>1. Respiración Diafragmática</h3>
+                <p>Favorece oxigenación profunda y reduce frecuencia cardíaca. <span class="highlight">Ideal antes de partidos</span>.</p>
+                
+                <h3>2. Relajación Muscular Progresiva</h3>
+                <p>Libera tensión mediante contracción y relajación de grupos musculares.</p>
+                
+                <h3>3. Visualización Guiada</h3>
+                <p>Imaginar escenarios positivos refuerza la confianza y prepara para desafíos reales.</p>
+                
+                <p style="margin-top: 35px; color: #ff00ff; font-weight: 600;">Ejemplo: <strong>Faker</strong> utiliza respiración controlada para mantener compostura en situaciones críticas.</p>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Preparación Mental -->
+        <div class="slide">
+            <div class="slide-number">06 / 11</div>
+            <div class="slide-content">
+                <h2>PREPARACIÓN MENTAL PRE-PARTIDO</h2>
+                <h3>Componentes Esenciales:</h3>
+                <ul>
+                    <li><span class="emphasis">Revisión de estrategias:</span> Repasar tácticas y analizar oponentes</li>
+                    <li><span class="emphasis">Calentamiento mental:</span> Ejercicios de atención y música motivacional</li>
+                    <li><span class="emphasis">Ritual personal:</span> Secuencia de acciones para entrar en modo competitivo</li>
+                    <li><span class="emphasis">Meditación breve:</span> 5-10 minutos para calmar la mente</li>
+                </ul>
+                <p style="margin-top: 35px; color: #00ffff; font-weight: 600;">Ejemplo: <strong>s1mple</strong> combina meditación y análisis estratégico antes de partidas importantes.</p>
+            </div>
+        </div>
+
+           <!-- Slide 7: Importancia de rutinas saludables -->
+    <div class="slide">
+        <div class="slide-number">07 / 11</div>
+        <div class="slide-content">
+          <h2>IMPORTANCIA DE RUTINAS SALUDABLES PARA ESPORTS</h2>
+          <p>Los eSports demandan concentración y resistencia mental; un estilo de vida saludable es clave para sostener el rendimiento.</p>
+          <ul>
+            <li><span class="emphasis">Alimentación equilibrada:</span> carbohidratos complejos, proteínas magras y grasas saludables.</li>
+            <li><span class="emphasis">Ejercicio regular:</span> activación física breve para mejorar circulación y enfoque.</li>
+            <li><span class="emphasis">Ergonomía:</span> postura correcta y pausas activas cada 45–60 minutos.</li>
+          </ul>
+        </div>
+      </div>
+  
+      <!-- Slide 8: Sueño, hidratación y descansos -->
+      <div class="slide">
+        <div class="slide-number">08 / 11</div>
+        <div class="slide-content">
+          <h2>SUEÑO, HIDRATACIÓN Y DESCANSOS ACTIVOS</h2>
+          <ul>
+            <li><span class="emphasis">7–8 horas de sueño:</span> ritmo circadiano y rutina relajante antes de dormir.</li>
+            <li><span class="emphasis">2 L de agua al día:</span> mantener la atención y evitar fatiga.</li>
+            <li><span class="emphasis">Pausas cada hora:</span> estiramientos y micro-descansos para renovar la concentración.</li>
+          </ul>
+        </div>
+      </div>
+  
+      <!-- Slide 9: Variables psicológicas y cognitivas -->
+      <div class="slide">
+        <div class="slide-number">09 / 11</div>
+        <div class="slide-content">
+          <h2>VARIABLES PSICOLÓGICAS Y COGNITIVAS</h2>
+          <h3>Autoeficacia y motivación</h3>
+          <p>Test rápido de confianza (1–5) y refuerzo positivo con pequeños logros diarios.</p>
+          <h3>Entrenamiento cognitivo</h3>
+          <p>Apps como Lumosity o ejercicios de reacción con pelotas de luz para mejorar tiempo de respuesta.</p>
+          <h3>Coaching mental</h3>
+          <p>Rutina de respiración 4-4-6, relajación progresiva y visualización guiada antes de dormir.</p>
+        </div>
+      </div>
+  
+      <!-- Slide 10: Gestión emocional y resiliencia -->
+      <div class="slide">
+        <div class="slide-number">10 / 11</div>
+        <div class="slide-content">
+          <h2>GESTIÓN EMOCIONAL Y RESILIENCIA</h2>
+          <h3>Cómo afrontar derrotas</h3>
+          <p>Revisión post-partida objetivo: identificar un acierto y un error para aprender sin culpa.</p>
+          <h3>Técnicas de feedback</h3>
+          <p>Diario de rendimiento: 3 logros y 2 retos diarios; feedback específico y orientado a la acción.</p>
+        </div>
+      </div>
+  
+      <!-- Slide 11: Conclusión -->
+        <div class="slide">
+        <div class="slide-number">11 / 11</div>
+        <div class="slide-content">
+            <div style="margin-top: 50px;"></div> <!-- Esto baja el título un poco -->
+            <h2>CONCLUSIÓN</h2>
+            <ul>
+            <li><span class="emphasis">La fortaleza mental</span> separa a los campeones del resto.</li>
+            <li>El <span class="emphasis">rendimiento sostenible</span> se apoya en hábitos fuera del juego.</li>
+            <li>La <span class="emphasis">gestión emocional</span> y el <span class="emphasis">feedback</span> construyen equipos resilientes.</li>
+            <li>Integrar estas prácticas debe volverse un <span class="highlight">hábito</span>.</li>
+            </ul>
+            <p style="margin-top: 30px; font-style: italic; color: #ccc;">
+            La mente es el verdadero motor del alto rendimiento competitivo.
+            </p>
+        </div>
+        </div>
+  
+        
+      <div class="slide-indicator"></div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ ANTERIOR</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">SIGUIENTE ▶</button>
+        </div>
+    </div>
+    
+    <script>
+        // Estado inicial
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let isTransitioning = false;
+    
+        // —————— Generar indicadores de forma dinámica ——————
+        const indicatorContainer = document.querySelector('.slide-indicator');
+        indicatorContainer.innerHTML = '';  // limpiamos cualquier contenido previo
+    
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('div');
+          dot.className = 'indicator-dot' + (i === 0 ? ' active' : '');
+          dot.addEventListener('click', () => goToSlide(i));
+          indicatorContainer.appendChild(dot);
+        }
+    
+        // Ahora sí obtenemos los indicadores recién creados
+        const indicators = document.querySelectorAll('.indicator-dot');
+    
+        // Mostrar una diapositiva específica
+        function showSlide(n) {
+          if (isTransitioning) return;
+          isTransitioning = true;
+    
+          const prev = currentSlide;
+          slides[prev].classList.remove('active');
+          indicators[prev].classList.remove('active');
+    
+          currentSlide = n;
+          if (currentSlide >= totalSlides) currentSlide = 0;
+          if (currentSlide < 0) currentSlide = totalSlides - 1;
+    
+          // Transición
+          if (currentSlide !== prev) {
+            slides[prev].classList.add('exiting');
+            slides[currentSlide].classList.add('entering');
+    
+            setTimeout(() => {
+              slides[prev].classList.remove('exiting');
+              slides[currentSlide].classList.remove('entering');
+              slides[currentSlide].classList.add('active');
+              indicators[currentSlide].classList.add('active');
+              updateNavButtons();
+              isTransitioning = false;
+            }, 300);
+          } else {
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            updateNavButtons();
+            isTransitioning = false;
+          }
+        }
+    
+        // Ir a una diapositiva directamente
+        function goToSlide(n) {
+          showSlide(n);
+        }
+    
+        // Avanzar o retroceder
+        function changeSlide(dir) {
+          if (!isTransitioning) showSlide(currentSlide + dir);
+        }
+    
+        // Habilitar/deshabilitar botones
+        function updateNavButtons() {
+          document.getElementById('prevBtn').disabled = currentSlide === 0;
+          document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+    
+        // Navegación con teclado
+        document.addEventListener('keydown', e => {
+          if (e.key === 'ArrowLeft') changeSlide(-1);
+          if (e.key === 'ArrowRight') changeSlide(1);
+        });
+    
+        // Soporte swipe en móviles
+        let touchStartX = 0, touchEndX = 0;
+        document.addEventListener('touchstart', e => {
+          touchStartX = e.changedTouches[0].screenX;
+        });
+        document.addEventListener('touchend', e => {
+          touchEndX = e.changedTouches[0].screenX;
+          const delta = touchEndX - touchStartX;
+          if (Math.abs(delta) > 50) changeSlide(delta > 0 ? -1 : 1);
+        });
+    
+        // Inicializar presentación
+        showSlide(0);
+    
+        // —————— Partículas dinámicas ——————
+        function createParticle() {
+          const p = document.createElement('div');
+          p.className = 'particle';
+          p.style.left = Math.random() * 100 + '%';
+          p.style.animationDelay = Math.random() * 2 + 's';
+          p.style.animationDuration = (Math.random() * 4 + 6) + 's';
+          const cols = ['rgba(0,255,255,0.6)','rgba(255,0,255,0.6)','rgba(255,255,0,0.6)'];
+          p.style.background = cols[Math.floor(Math.random()*cols.length)];
+          document.querySelector('.floating-particles').appendChild(p);
+          setTimeout(() => p.remove(), 12000);
+        }
+        setInterval(createParticle, 3000);
+    
+        // Pre-cargar para transiciones suaves
+        window.addEventListener('load', () => {
+          slides.forEach(s => {
+            s.style.display = 'flex';
+            s.offsetHeight;
+            s.style.display = '';
+          });
+        });
+    </script>
+    
+</body>
+</html>

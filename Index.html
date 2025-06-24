@@ -59,24 +59,24 @@
         .logo-container {
             width: 146px;
             height: 82px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px dashed rgba(0, 255, 136, 0.5);
+            /* opcional: elimina fondo y borde si no los quieres */
+            background: transparent;
+            border: none;
+            /* conserva centramiento y transición */
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
-            transition: all 0.3s ease;
         }
 
-        .logo-container:hover {
-            border-color: #00ff88;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* opcional: una suave transición al hover */
+            transition: transform 0.3s ease;
         }
-
-        .logo-placeholder {
-            color: rgba(0, 255, 136, 0.7);
-            font-size: 12px;
-            text-align: center;
+        .logo-container:hover img {
+            transform: scale(1.05);
         }
 
         .course-title {
@@ -352,10 +352,8 @@
     <!-- Header -->
     <header class="header">
       <div class="logo-container">
-        <div class="logo-placeholder">
-          LOGO<br>INSTITUCIÓN<br>
-          <small>146x82px</small>
-        </div>
+        <img src="logo.png" alt="Logo institucional">
+      </div>
       </div>
       <h1 class="course-title">Estrategia y Entrenamiento en eSports (Coaching y Psicología Deportiva)</h1>
     </header>
@@ -410,20 +408,19 @@
         </div>
       </div>
   
-      <!-- Módulo 4: inactivo -->
-      <div class="module-card disabled tooltip" data-module="4" data-active="false">
+      <!-- Módulo 4: activo -->
+      <div class="module-card" data-module="4" data-active="true">
         <div class="module-info">
           <h2 class="module-title">Módulo 4</h2>
           <p class="module-description">Comunicación en Equipo</p>
         </div>
         <div class="module-actions">
-          <div class="status-indicator disabled"></div>
+          <div class="status-indicator"></div>
           <button class="download-btn"
-                  data-active="false"
+                  data-active="true"
                   data-folder="Modulo4"
-                  data-file="Módulo 4.pdf"
-                  style="opacity: 0.5; cursor: not-allowed;"
-                  title="No disponible"></button>
+                  data-file="M4 - Psicología Deportiva y Mentalidad Competitiva- Alain Gerfauo.pdf"
+                  title="Descargar PDF"></button>
         </div>
       </div>
   
