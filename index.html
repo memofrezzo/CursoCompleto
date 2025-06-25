@@ -354,7 +354,6 @@
       <div class="logo-container">
         <img src="logo.png" alt="Logo institucional">
       </div>
-      </div>
       <h1 class="course-title">Estrategia y Entrenamiento en eSports (Coaching y Psicología Deportiva)</h1>
     </header>
   
@@ -596,7 +595,13 @@
           // Prevenir scroll horizontal innecesario
           document.body.style.overflowX = 'hidden';
         });
-      
+        window.addEventListener('pageshow', () => {
+            hideLoading();
+          });
+          // Al cargar por primera vez
+          window.addEventListener('load', () => {
+            hideLoading();
+          });
         // Reajustar partículas al redimensionar
         window.addEventListener('resize', () => {
           document.querySelectorAll('.particle').forEach(particle => {
